@@ -1,0 +1,45 @@
+### Virtual host 
+
+<VirtualHost :80>                                                                                                                                                                              
+     
+     ServerAdmin admin@host
+ 
+     ServerName <host>
+     ServerAlias <alias>
+ 
+     DocumentRoot /home/www/<host>/docroot
+     SetEnv PERL5LIB /home/www/<host>/
+ 
+     <Directory />
+         Options none
+         AddHandler cgi-script .cgi .pl .mpl
+         DirectoryIndex index.mpl
+         AllowOverride All
+         Options ExecCGI -MultiViews +SymLinksIfOwnerMatch
+         Order allow,deny
+         Allow from all
+     </Directory>
+
+     
+ 
+     # Possible values include: debug, info, notice, warn, error, crit,
+     # alert, emerg.
+     LogLevel warn
+ 
+     ErrorLog /home/www/<host>logs/error.log
+     CustomLog /home/www/<host>/logs/access.log combined
+     ServerSignature On
+     
+</VirtualHost>
+
+
+### .htaccess
+
+RewriteEngine on                                                                                                                                                                                
+ 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+ 
+RewriteRule ^(.*)$ index.mpl?rt=$1 [L,QSA]
+
+
